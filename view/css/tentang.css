@@ -1,0 +1,175 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    background-color: #f8f9fa;
+    color: #000;
+    height: 100%; 
+  }
+  
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+  }
+  
+
+  .navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #2c2c5e;
+    color: white;
+    padding: 10px 0;
+  }
+  
+  .navbar-item {
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+  }
+  
+  
+
+  .main-content {
+    text-align: center;
+    flex: 1; 
+    padding: 20px;
+  }
+  
+  .main-content h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .main-content p {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .news-section h2 {
+    font-size: 20px;
+    margin: 20px 0;
+  }
+  
+  .news-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+    flex-wrap: wrap; 
+  }
+  
+  .news-card {
+    width: 80px;
+    height: 100px;
+    background-color: #2c2c5e;
+    border-radius: 8px;
+  }
+  
+
+  footer {
+    background-color: #2c2c5e;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: sticky; 
+    bottom: 0;
+    flex-shrink: 0; 
+  }
+
+  .news-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .news-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    width: calc(25% - 20px); /* Adjust the width of cards */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .news-card h3 {
+    margin: 0 0 8px;
+    font-size: 1.2rem;
+  }
+  
+  .news-card p {
+    margin: 0;
+    color: #555;
+  }
+  
+  
+
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .main-content h1 {
+      font-size: 20px; 
+    }
+  
+    .main-content p {
+      font-size: 14px; 
+    }
+  
+    .news-card {
+      width: 60px; 
+      height: 80px;
+    }
+  }
+  
+
+  @media (max-width: 480px) {
+    .navbar {
+      flex-direction: column;
+      gap: 8px;
+    }
+  
+    .news-card {
+      width: 50px;
+      height: 70px;
+    }
+  
+    .main-content h1 {
+      font-size: 18px;
+    }
+  
+    .main-content p {
+      font-size: 12px;
+    }
+  }
+  
+
+  @media (min-width: 1024px) {
+    .navbar-item {
+      font-size: 16px;
+    }
+  
+    .main-content h1 {
+      font-size: 32px;
+    }
+  
+    .main-content p {
+      font-size: 18px; 
+    }
+  
+    .news-card {
+      width: 100px; 
+      height: 120px;
+    }
+  }
+  
