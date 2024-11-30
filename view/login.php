@@ -10,8 +10,6 @@
   <div class="wrapper">
  
   <?php include '../includes/navbar.php'; ?>
-
-
     <div class="login-container">
       <div class="login-box">
         <h2>Login</h2>
