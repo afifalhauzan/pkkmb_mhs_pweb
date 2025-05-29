@@ -23,7 +23,7 @@
 
 
   <footer>
-    Developed by Guru Genjet Team
+    2025
   </footer>
 </body>
 </html>

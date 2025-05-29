@@ -1,17 +1,13 @@
 <?php
-// Start the session to retrieve the NIM
 session_start();
 
-// Check if the NIM is available in the session
 if (!isset($_SESSION['nim'])) {
     echo "User not logged in or NIM not found.";
     exit;
 }
 
-// Get the current user's NIM from the session
 $nim = $_SESSION['nim'];
 
-// Get the selected task ID from the query string
 if (!isset($_GET['id'])) {
     echo "No task selected.";
     exit;
@@ -19,7 +15,6 @@ if (!isset($_GET['id'])) {
 
 $taskId = $_GET['id'];
 
-// API URL for fetching task details
 $api_url = "http://127.0.0.1:8000/api/mahasiswa/listtugas";
 
 $api_status_url = "http://127.0.0.1:8000/api/tugas/status/$nim/$taskId";
@@ -27,40 +22,43 @@ $api_status_url = "http://127.0.0.1:8000/api/tugas/status/$nim/$taskId";
 $response2 = @file_get_contents($api_status_url);
 $status_data = @json_decode($response2, true);
 
-if ($status_data && $status_data['success'] === true) {
-    // If the status is successful, assign the variables
-    $file_tugas = $status_data['data']['file_tugas'];
-    $nilai = $status_data['data']['nilai'];
-    $updated_at = $status_data['data']['updated_at'];
+if ($status_data && $status_data['success'] === true && isset($status_data['data'])) {
+    $file_tugas = $status_data['data']['file_tugas'] ?? null;
+    $nilai = $status_data['data']['nilai'] ?? null;
+    $updated_at = $status_data['data']['updated_at'] ?? null;
+    $text_feedback = $status_data['data']['text_feedback'] ?? null; // Get text_feedback
+    $time_submission = $status_data['data']['time_submission'] ?? null; // Get time_submission
 
-    // Set nilai display
-    $nilai_display = $nilai === null ? "Belum Dinilai" : $nilai;
+    $nilai_display = $nilai === null ? "Belum Dinilai" : htmlspecialchars($nilai);
+    $feedback_display = $text_feedback === null ? "Belum Ada Feedback" : htmlspecialchars($text_feedback);
+
+    if ($time_submission !== null) {
+        // Format time_submission if it exists
+        $submission_time_display = date('d M Y, H:i', strtotime($time_submission));
+    } else {
+        $submission_time_display = "Belum Ada Pengumpulan";
+    }
+
 } else {
-    // If the success flag is false, don't define the variables
     $file_tugas = null;
-    $nilai = null;
-    $updated_at = null;
     $nilai_display = "Belum dinilai";
+    $feedback_display = "Belum Ada Feedback";
+    $submission_time_display = "Belum Ada Pengumpulan";
 }
 
 
-
-// Initialize cURL session to get task details
 $curl = curl_init($api_url);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($curl);
 
-// Handle cURL errors
 if (curl_errno($curl)) {
     echo "Failed to fetch task details. Error: " . curl_error($curl);
     exit;
 }
 
-// Decode the JSON response
 $taskData = json_decode($response, true);
 curl_close($curl);
 
-// Find the task that matches the ID
 $selectedTask = null;
 if ($taskData && isset($taskData['data'])) {
     foreach ($taskData['data'] as $task) {
@@ -71,28 +69,22 @@ if ($taskData && isset($taskData['data'])) {
     }
 }
 
-// Handle the form submission
 $message = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get the input submission link from the form
     $submission_link = $_POST['submission_link'] ?? '';
 
-    // URL encode the submission link to avoid issues
     $submission_link = urlencode($submission_link);
 
     if (!empty($submission_link)) {
-        // Construct the API URL to submit the task
         $submit_api_url = "http://127.0.0.1:8000/api/tugas/submit/$nim/$taskId/$submission_link";
 
-        // Initialize cURL session for task submission
         $curl = curl_init($submit_api_url);
-        curl_setopt($curl, CURLOPT_POST, true); // Set HTTP method to POST
+        curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, [
             'submission_link' => $submission_link
         ]);
 
-        // Execute the API call
         $submit_response = curl_exec($curl);
     }
 }
@@ -133,13 +125,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button type="submit">Submit</button>
                     </form>
 
+
                     <!-- Message Display -->
                     <?php if (!empty($message)): ?>
                         <p><?php echo htmlspecialchars($message); ?></p>
                     <?php endif; ?>
 
                     <div>
-                        <h3><strong>Nilai :</strong> <?= htmlspecialchars($nilai_display) ?></h3>
+                        <h3><strong>Nilai :</strong> <?= $nilai_display ?></h3>
+                        <?php if ($text_feedback !== null): ?>
+                            <p><strong>Feedback:</strong> <?= $feedback_display ?></p>
+                        <?php endif; ?>
+                        <p><strong>Waktu Pengumpulan:</strong> <?= $submission_time_display ?></p>
+                        <?php if ($file_tugas !== null): ?>
+                            <p><strong>Link Tugas yang Dikumpulkan:</strong> <a href="<?= htmlspecialchars($file_tugas) ?>" target="_blank"><?= htmlspecialchars($file_tugas) ?></a></p>
+                        <?php endif; ?>
                     </div>
 
 
@@ -151,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <footer>
-        Developed by Guru Genjet Team
+        2025
     </footer>
 
     <?php

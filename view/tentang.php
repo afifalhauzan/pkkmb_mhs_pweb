@@ -25,24 +25,21 @@
   </div>
 
   <footer>
-    Developed by Guru Genjet Team
+   2025
   </footer>
 
   <script>
-    // Fetch kegiatan data
     fetch('../api/kegiatan.php')
       .then(response => response.json())
       .then(data => {
         const container = document.getElementById('news-container');
 
-        // Check if the API response indicates success
         if (!data.success) {
           container.innerHTML = `<p>Failed to load kegiatan: ${data.message || 'Unknown error'}</p>`;
           return;
         }
 
-        // Populate the news container with kegiatan data
-        const kegiatanData = data.data; // Access the `data` array
+        const kegiatanData = data.data;
         container.innerHTML = kegiatanData.map(kegiatan => `
       <div class="news-card">
         <h3>${kegiatan.Nama}</h3>

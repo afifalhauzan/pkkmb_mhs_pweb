@@ -1,3 +1,4 @@
+drop database pkkmb_mahasiswa;
 CREATE DATABASE IF NOT EXISTS pkkmb_mahasiswa;
 
 USE pkkmb_mahasiswa;
