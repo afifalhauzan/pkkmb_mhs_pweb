@@ -26,14 +26,13 @@ if ($status_data && $status_data['success'] === true && isset($status_data['data
     $file_tugas = $status_data['data']['file_tugas'] ?? null;
     $nilai = $status_data['data']['nilai'] ?? null;
     $updated_at = $status_data['data']['updated_at'] ?? null;
-    $text_feedback = $status_data['data']['text_feedback'] ?? null; // Get text_feedback
-    $time_submission = $status_data['data']['time_submission'] ?? null; // Get time_submission
+    $text_feedback = $status_data['data']['text_feedback'] ?? null; 
+    $time_submission = $status_data['data']['time_submission'] ?? null;
 
     $nilai_display = $nilai === null ? "Belum Dinilai" : htmlspecialchars($nilai);
     $feedback_display = $text_feedback === null ? "Belum Ada Feedback" : htmlspecialchars($text_feedback);
 
     if ($time_submission !== null) {
-        // Format time_submission if it exists
         $submission_time_display = date('d M Y, H:i', strtotime($time_submission));
     } else {
         $submission_time_display = "Belum Ada Pengumpulan";
@@ -100,9 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/penugasan.css">
     <link rel="stylesheet" href="css/tugas_detail.css">
-    <!-- SweetAlert2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
@@ -125,8 +122,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button type="submit">Submit</button>
                     </form>
 
-
-                    <!-- Message Display -->
                     <?php if (!empty($message)): ?>
                         <p><?php echo htmlspecialchars($message); ?></p>
                     <?php endif; ?>

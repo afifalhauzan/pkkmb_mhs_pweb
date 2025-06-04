@@ -13,8 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $kode_presensi = $_POST['kode_presensi'] ?? '';
 
     if (!empty($kode_presensi)) {
-        // Encode kode_presensi for URL path if your API expects it this way
-        // If your API expects it as a form field, adjust the curl_setopt and Laravel controller
         $encoded_kode_presensi = urlencode($kode_presensi);
         $api_url_submit = "http://127.0.0.1:8000/api/presensi/submit/$nim/$encoded_kode_presensi";
 
@@ -42,13 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $message = "Kode presensi tidak boleh kosong.";
     }
-    // After submission, it's often good to refresh the page to show updated attendance
-    // header("Location: presensi.php");
-    // exit;
 }
 
-
-// --- Fetch Attendance Rekap Data ---
 $rekap_api_url = "http://127.0.0.1:8000/api/mahasiswa/rekap-kehadiran/$nim";
 
 $rekap_response = @file_get_contents($rekap_api_url);
